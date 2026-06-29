@@ -1,11 +1,24 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro
+using TMPro;
+using UnityEngine.UI;
+
 public class UIManager : MonoBehaviour
 {
     [SerializeField] TMP_Text journalText;
     [SerializeField] GameObject journalPanel;
+    [SerializeField] private GameObject MenuPanel;
+    [SerializeField] private GameObject DiePanel;
+    [SerializeField] private TMP_Text HintText;
+    [SerializeField] private Image frontHealthBar;
+    [SerializeField] private Image backHealthBar;
+    [SerializeField] private Image scoreBar;
 
+
+    [Header("Variables")] 
+    private float lerpTimer = 0;
+    [SerializeField] private float chipSpeed = 1f;
     // I used claude for all this I'm not writing out 9 different journals
     List<string> journalContents = new List<string>
     {
@@ -40,22 +53,71 @@ public class UIManager : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName); 
     }
+    
     public void Quit()
     {
-        // If running in the Unity Editor, stop the Play Mode
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
         #else
-        // If running as a standalone built game, close the application
         Application.Quit();
         #endif
     }
+
     public void DisplayJournalText(int journalNumber)
     {
-        journalPanel.enabled = !journalPanel.activeSelf;
+        journalPanel.SetActive(!journalPanel.activeSelf);
         if (journalPanel.activeSelf)
         {
             journalText.text = journalContents[journalNumber-1];
         }
     }
+
+    public void Pause()
+    {
+        //sets the menu
+        MenuPanel.SetActive(!MenuPanel.activeSelf);
+        Cursor.visible = MenuPanel.activeSelf;
+        Cursor.lockState = MenuPanel.activeSelf ? CursorLockMode.None : CursorLockMode.Locked;
+    }
+
+    public void UpdateScore(float score, float maxScore)
+    {
+        //Changes the score and the xp bar so that the player can say their xp bar is low
+        scoreBar.fillAmount = Mathf.Clamp(score / maxScore, 0, 1);
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene("MainLevel");
+    }
+
+    public void ShowDiePanel()
+    {
+        //Lets the player die
+        DiePanel.SetActive(true);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void ShowHintingText(string hintString)
+    {
+        //Show hints to the player
+        HintText.text = hintString;
+    }
+
+    public void UpdateHealthUI(float health, float maxHealth)
+    {
+        //Change the health bar when taking damage
+        float fillB = backHealthBar.fillAmount;
+        float hFraction = health / maxHealth;
+        if(fillB > hFraction)
+        {
+            frontHealthBar.fillAmount = hFraction;
+            backHealthBar.color = Color.red;
+            lerpTimer += Time.deltaTime;
+            float percentComplete = lerpTimer / chipSpeed;
+            backHealthBar.fillAmount = Mathf.Lerp(fillB, hFraction, percentComplete);
+        }
+    }
+
 }
