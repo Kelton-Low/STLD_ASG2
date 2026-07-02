@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class UIManager : MonoBehaviour
 {
@@ -51,6 +52,8 @@ public class UIManager : MonoBehaviour
         // Journal 09 — Dr. Solís, Final Entry (Med Bay, written near the end)
         "MEDICAL LOG, DAY 11. I'm the only one left on the ship now. I rigged the engine terminal to log this the moment someone slots that chip back in — figured it'd be you, Rei. The ones who go home are the ones who turn back early. The Captain and Kofi stayed and asked too many questions. I should've made them leave. Door should be open once you place it. Go. Don't stop for me.\n  — Dr. Maren Solís"
     };
+    
+    
     public void SceneLoader(string sceneName)
     {
         SceneManager.LoadScene(sceneName); 
@@ -67,11 +70,15 @@ public class UIManager : MonoBehaviour
 
     public void DisplayJournalText(int journalNumber)
     {
-        journalPanel.SetActive(!journalPanel.activeSelf);
-        if (journalPanel.activeSelf)
-        {
-            journalText.text = journalContents[journalNumber-1];
-        }
+        journalPanel.SetActive(true);
+        
+        journalText.text = journalContents[journalNumber-1];
+
+    }
+    public void CloseJournal()
+    {
+        journalPanel.SetActive(false);
+
     }
 
     public void Pause()
@@ -80,6 +87,7 @@ public class UIManager : MonoBehaviour
         MenuPanel.SetActive(!MenuPanel.activeSelf);
         Cursor.visible = MenuPanel.activeSelf;
         Cursor.lockState = MenuPanel.activeSelf ? CursorLockMode.None : CursorLockMode.Locked;
+        Time.timeScale = MenuPanel.activeSelf ? 0f : 1f;
     }
 
     public void UpdateScore(float score, float maxScore)

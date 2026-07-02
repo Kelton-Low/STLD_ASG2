@@ -34,7 +34,6 @@ public class SharkEnemy : MonoBehaviour
     }
     void OnTriggerStay()
     {
-        print("staying");
         if(damageTimer < timeBetweenDamage)
         {
             damageTimer += Time.deltaTime;

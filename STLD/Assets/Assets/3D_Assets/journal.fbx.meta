@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 768b3200908ba9943acfbbd3d62e4b30
+guid: 39b7e57f6c6da834e876246d0a833bfe
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,13 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: container
-    second: {fileID: 2100000, guid: 4d6d0833024023f44bf2f1c7199ff8b8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: oil
-    second: {fileID: 2100000, guid: b6e50a6f4acefbd4da543a63f70545b6, type: 2}
+      name: journal
+    second: {fileID: 2100000, guid: 112f1345e4e86f545af89acf36d78fe1, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
